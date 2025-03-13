@@ -24,6 +24,8 @@ namespace Open.CommandAndConquer.Sdl3;
 
 public static partial class SDL3
 {
+    private const float SDL_FLT_EPSILON = 1.1920928955078125e-07F;
+
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_strdup))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     internal static unsafe partial byte* SDL_strdup(byte* str);
@@ -31,4 +33,8 @@ public static partial class SDL3
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_free))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     internal static unsafe partial void SDL_free(void* str);
+
+    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_fabsf))]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial float SDL_fabsf(float f);
 }
