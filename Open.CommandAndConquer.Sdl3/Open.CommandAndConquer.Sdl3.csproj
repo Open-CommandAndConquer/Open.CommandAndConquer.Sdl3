@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <DefineTrace>true</DefineTrace>
         <DebugType>full</DebugType>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
