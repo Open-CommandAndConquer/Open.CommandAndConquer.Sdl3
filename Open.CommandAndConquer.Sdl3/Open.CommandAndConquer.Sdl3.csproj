@@ -25,7 +25,7 @@
     
     <PropertyGroup>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>0.4.0</Version>
+        <Version>0.4.1</Version>
         <Title>Open.CommandAndConquer.Sdl3</Title>
         <Authors>Open.CommandAndConquer, Victor Matia &lt;vmatir@outlook.com&gt;</Authors>
         <Description>A direct import of the SDL3 library for the Open.CommandAndConquer project.</Description>
@@ -36,6 +36,18 @@
         <PackageTags>SDL3;Import;Marshal;DllImport;LibraryImport;PInvoke</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageReadmeFile>docs\README.md</PackageReadmeFile>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="..\README.md">
+            <Pack>true</Pack>
+            <PackagePath>docs\README.md</PackagePath>
+        </None>
+        <None Include="..\LICENSE.md">
+            <Pack>true</Pack>
+            <PackagePath>docs\LICENSE.md</PackagePath>
+        </None>
+    </ItemGroup>
 
 </Project>
