@@ -14,6 +14,7 @@
         <DefineDebug>true</DefineDebug>
         <Optimize>false</Optimize>
         <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+        <WarningsAsErrors>false</WarningsAsErrors>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
@@ -21,6 +22,7 @@
         <DefineDebug>false</DefineDebug>
         <Optimize>true</Optimize>
         <EmitCompilerGeneratedFiles>false</EmitCompilerGeneratedFiles>
+        <WarningsAsErrors>true</WarningsAsErrors>
     </PropertyGroup>
     
     <PropertyGroup>
