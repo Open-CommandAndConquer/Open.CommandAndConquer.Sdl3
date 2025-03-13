@@ -26,6 +26,27 @@ namespace Open.CommandAndConquer.Sdl3;
 
 public static partial class SDL3
 {
+    [NativeMarshalling(typeof(SafeHandleMarshaller<SDL_ClipboardData>))]
+    public sealed class SDL_ClipboardData : SafeHandle
+    {
+        public override bool IsInvalid => handle == IntPtr.Zero;
+
+        public SDL_ClipboardData()
+            : base(invalidHandleValue: IntPtr.Zero, ownsHandle: true) => SetHandle(nint.Zero);
+
+        protected override bool ReleaseHandle()
+        {
+            if (IsInvalid)
+            {
+                return true;
+            }
+
+            SDL_free(handle);
+            SetHandle(IntPtr.Zero);
+            return true;
+        }
+    }
+
     [LibraryImport(
         nameof(SDL3),
         EntryPoint = nameof(SDL_SetClipboardText),
@@ -148,7 +169,7 @@ public static partial class SDL3
         StringMarshalling = StringMarshalling.Utf8
     )]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial IntPtr SDL_GetClipboardData(string mime_type, out CULong size);
+    public static partial SDL_ClipboardData SDL_GetClipboardData(string mime_type, out CULong size);
 
     [LibraryImport(
         nameof(SDL3),

@@ -34,6 +34,10 @@ public static partial class SDL3
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     internal static unsafe partial void SDL_free(void* str);
 
+    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_free))]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    internal static partial void SDL_free(IntPtr str);
+
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_fabsf))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     private static partial float SDL_fabsf(float f);
