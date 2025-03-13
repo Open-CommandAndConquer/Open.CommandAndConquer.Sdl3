@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <DefineTrace>true</DefineTrace>
+        <DebugType>full</DebugType>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <DebugSymbols>true</DebugSymbols>
+        <DefineDebug>true</DefineDebug>
+        <Optimize>false</Optimize>
+        <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DebugSymbols>false</DebugSymbols>
+        <DefineDebug>false</DefineDebug>
+        <Optimize>true</Optimize>
+        <EmitCompilerGeneratedFiles>false</EmitCompilerGeneratedFiles>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>0.0.1</Version>
+        <Title>Open.CommandAndConquer.Sdl3</Title>
+        <Authors>Open.CommandAndConquer, Victor Matia &lt;vmatir@outlook.com&gt;</Authors>
+        <Description>A direct import of the SDL3 library for the Open.CommandAndConquer project.</Description>
+        <Copyright>Copyright (c) Open.CommandAndConquer.Sdl3, Victor Matia &lt;vmatir@outlook.com&gt;</Copyright>
+        <PackageProjectUrl>https://github.com/Open-CommandAndConquer</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Open-CommandAndConquer/Open.CommandAndConquer.Sdl3</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>SDL3;Import;Marshal;DllImport;LibraryImport;PInvoke</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    </PropertyGroup>
+
+</Project>
