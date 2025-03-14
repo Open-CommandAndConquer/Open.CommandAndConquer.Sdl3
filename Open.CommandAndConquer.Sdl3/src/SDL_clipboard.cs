@@ -119,7 +119,7 @@ public static partial class SDL3
         SDL_ClipboardDataCallback callback,
         SDL_ClipboardCleanupCallback cleanup,
         IntPtr userdata,
-        ICollection<string> mime_types
+        IReadOnlyCollection<string> mime_types
     )
     {
         unsafe

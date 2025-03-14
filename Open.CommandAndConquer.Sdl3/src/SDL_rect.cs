@@ -107,16 +107,13 @@ public static partial class SDL3
         out SDL_Rect result
     );
 
-    public static bool SDL_GetRectEnclosingPoints(
-        ICollection<SDL_Point> points,
-        out SDL_Rect result
-    )
+    public static bool SDL_GetRectEnclosingPoints(Span<SDL_Point> points, out SDL_Rect result)
     {
         unsafe
         {
             return INTERNAL_SDL_GetRectEnclosingPoints(
                 points.ToArray(),
-                points.Count,
+                points.Length,
                 null,
                 out result
             );
@@ -124,7 +121,7 @@ public static partial class SDL3
     }
 
     public static bool SDL_GetRectEnclosingPoints(
-        ICollection<SDL_Point> points,
+        Span<SDL_Point> points,
         SDL_Rect clip,
         out SDL_Rect result
     )
@@ -133,7 +130,7 @@ public static partial class SDL3
         {
             return INTERNAL_SDL_GetRectEnclosingPoints(
                 points.ToArray(),
-                points.Count,
+                points.Length,
                 &clip,
                 out result
             );
@@ -199,7 +196,7 @@ public static partial class SDL3
     );
 
     public static bool SDL_GetRectEnclosingPointsFloat(
-        ICollection<SDL_FPoint> points,
+        Span<SDL_FPoint> points,
         out SDL_FRect result
     )
     {
@@ -207,7 +204,7 @@ public static partial class SDL3
         {
             return INTERNAL_SDL_GetRectEnclosingPointsFloat(
                 points.ToArray(),
-                points.Count,
+                points.Length,
                 null,
                 out result
             );
@@ -215,7 +212,7 @@ public static partial class SDL3
     }
 
     public static bool SDL_GetRectEnclosingPointsFloat(
-        ICollection<SDL_FPoint> points,
+        Span<SDL_FPoint> points,
         SDL_FRect clip,
         out SDL_FRect result
     )
@@ -224,7 +221,7 @@ public static partial class SDL3
         {
             return INTERNAL_SDL_GetRectEnclosingPointsFloat(
                 points.ToArray(),
-                points.Count,
+                points.Length,
                 &clip,
                 out result
             );
