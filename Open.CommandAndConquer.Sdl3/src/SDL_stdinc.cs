@@ -26,6 +26,9 @@ public static partial class SDL3
 {
     private const float SDL_FLT_EPSILON = 1.1920928955078125e-07F;
 
+    private static uint SDL_FOURCC(char A, char B, char C, char D) =>
+        (uint)((byte)A | (byte)B << 8 | (byte)C << 16 | (byte)D << 24);
+
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_strdup))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     internal static unsafe partial byte* SDL_strdup(byte* str);
