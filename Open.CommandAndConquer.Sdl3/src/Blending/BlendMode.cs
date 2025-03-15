@@ -17,22 +17,15 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using Open.CommandAndConquer.Sdl3.Blending;
+namespace Open.CommandAndConquer.Sdl3.Blending;
 
-namespace Open.CommandAndConquer.Sdl3.Imports;
-
-internal static partial class SDL3
+public enum BlendMode : uint
 {
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_ComposeCustomBlendMode))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial BlendMode SDL_ComposeCustomBlendMode(
-        BlendFactor srcColorFactor,
-        BlendFactor dstColorFactor,
-        BlendOperation colorOperation,
-        BlendFactor srcAlphaFactor,
-        BlendFactor dstAlphaFactor,
-        BlendOperation alphaOperation
-    );
+    None = 0x00000000U,
+    Alpha = 0x00000001U,
+    Additive = 0x00000002U,
+    ColorModulate = 0x00000004U,
+    ColorMultiply = 0x00000008U,
+    PremultipliedAlpha = 0x00000010U,
+    AdditivePremultiplied = 0x00000020U,
 }
