@@ -30,6 +30,17 @@ public static partial class SDL3
     {
         public static SDL_InitFlags None => new(0U);
 
+        public static SDL_InitFlags operator |(SDL_InitFlags lhs, SDL_InitFlags rhs) =>
+            new(lhs.Value | rhs.Value);
+
+        public static SDL_InitFlags operator &(SDL_InitFlags lhs, SDL_InitFlags rhs) =>
+            new(lhs.Value & rhs.Value);
+
+        public static SDL_InitFlags operator ^(SDL_InitFlags lhs, SDL_InitFlags rhs) =>
+            new(lhs.Value ^ rhs.Value);
+
+        public static SDL_InitFlags operator ~(SDL_InitFlags flags) => new(~flags.Value);
+
         public static implicit operator uint(SDL_InitFlags flags) => flags.Value;
 
         public static implicit operator SDL_InitFlags(uint flags) => new(flags);
