@@ -21,6 +21,7 @@ using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
+using Open.CommandAndConquer.Sdl3.Blending;
 
 namespace Open.CommandAndConquer.Sdl3.Imports;
 
@@ -336,17 +337,14 @@ internal static partial class SDL3
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_SetSurfaceBlendMode))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SDL_SetSurfaceBlendMode(
-        SDL_Surface surface,
-        SDL_BlendMode blendMode
-    );
+    public static partial bool SDL_SetSurfaceBlendMode(SDL_Surface surface, BlendMode blendMode);
 
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_GetSurfaceBlendMode))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SDL_GetSurfaceBlendMode(
         SDL_Surface surface,
-        out SDL_BlendMode blendMode
+        out BlendMode blendMode
     );
 
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_SetSurfaceClipRect))]
