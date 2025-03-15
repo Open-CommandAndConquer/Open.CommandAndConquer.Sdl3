@@ -20,21 +20,28 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace Open.CommandAndConquer.Sdl3;
+namespace Open.CommandAndConquer.Sdl3.Imports;
 
-public static partial class SDL3
+internal static partial class SDL3
 {
-    public enum SDL_PowerState
-    {
-        SDL_POWERSTATE_ERROR = -1,
-        SDL_POWERSTATE_UNKNOWN,
-        SDL_POWERSTATE_ON_BATTERY,
-        SDL_POWERSTATE_NO_BATTERY,
-        SDL_POWERSTATE_CHARGING,
-        SDL_POWERSTATE_CHARGED,
-    }
+    private const float SDL_FLT_EPSILON = 1.1920928955078125e-07F;
 
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_GetPowerInfo))]
+    private static uint SDL_FOURCC(char A, char B, char C, char D) =>
+        (uint)((byte)A | (byte)B << 8 | (byte)C << 16 | (byte)D << 24);
+
+    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_strdup))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial SDL_PowerState SDL_GetPowerInfo(out int seconds, out int percent);
+    internal static unsafe partial byte* SDL_strdup(byte* str);
+
+    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_free))]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    internal static unsafe partial void SDL_free(void* str);
+
+    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_free))]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    internal static partial void SDL_free(IntPtr str);
+
+    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_fabsf))]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    private static partial float SDL_fabsf(float f);
 }

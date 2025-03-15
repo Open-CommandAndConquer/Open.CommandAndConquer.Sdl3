@@ -22,9 +22,9 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 using Open.CommandAndConquer.Sdl3.CustomMarshalling;
 
-namespace Open.CommandAndConquer.Sdl3;
+namespace Open.CommandAndConquer.Sdl3.Imports;
 
-public static partial class SDL3
+internal static partial class SDL3
 {
     public record struct SDL_InitFlags(uint Value)
     {
