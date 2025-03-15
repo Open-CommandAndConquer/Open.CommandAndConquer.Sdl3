@@ -530,6 +530,10 @@ public static partial class SDL3
 
         public override bool IsInvalid => handle == IntPtr.Zero;
 
+        internal SDL_Palette(IntPtr preexistingHandle)
+            : base(invalidHandleValue: IntPtr.Zero, ownsHandle: false) =>
+            SetHandle(preexistingHandle);
+
         public SDL_Palette()
             : base(invalidHandleValue: IntPtr.Zero, ownsHandle: true) => SetHandle(IntPtr.Zero);
 
