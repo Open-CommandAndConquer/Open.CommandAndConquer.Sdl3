@@ -17,31 +17,30 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace Open.CommandAndConquer.Sdl3;
+namespace Open.CommandAndConquer.Sdl3.Imports;
 
-public static partial class SDL3
+internal static partial class SDL3
 {
-    private const float SDL_FLT_EPSILON = 1.1920928955078125e-07F;
+    private static KeyValuePair<string, bool>[] LibraryNames =>
+        [
+            new("libSDL3.dll", OperatingSystem.IsWindows()),
+            new("libSDL3.so.0", OperatingSystem.IsLinux()),
+        ];
 
-    private static uint SDL_FOURCC(char A, char B, char C, char D) =>
-        (uint)((byte)A | (byte)B << 8 | (byte)C << 16 | (byte)D << 24);
-
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_strdup))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static unsafe partial byte* SDL_strdup(byte* str);
-
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_free))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static unsafe partial void SDL_free(void* str);
-
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_free))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static partial void SDL_free(IntPtr str);
-
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_fabsf))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial float SDL_fabsf(float f);
+    static SDL3() =>
+        NativeLibrary.SetDllImportResolver(
+            typeof(SDL3).Assembly,
+            (name, assembly, path) =>
+                NativeLibrary.Load(
+                    name switch
+                    {
+                        nameof(SDL3) => LibraryNames.FirstOrDefault(pair => pair.Value).Key ?? name,
+                        _ => name,
+                    },
+                    assembly,
+                    path
+                )
+        );
 }

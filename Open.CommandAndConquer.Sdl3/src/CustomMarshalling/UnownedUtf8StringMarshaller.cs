@@ -18,7 +18,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Runtime.InteropServices.Marshalling;
-using static Open.CommandAndConquer.Sdl3.SDL3;
+using static Open.CommandAndConquer.Sdl3.Imports.SDL3;
 
 namespace Open.CommandAndConquer.Sdl3.CustomMarshalling;
 

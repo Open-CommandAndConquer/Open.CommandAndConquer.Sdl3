@@ -17,30 +17,24 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace Open.CommandAndConquer.Sdl3;
+namespace Open.CommandAndConquer.Sdl3.Imports;
 
-public static partial class SDL3
+internal static partial class SDL3
 {
-    private static KeyValuePair<string, bool>[] LibraryNames =>
-        [
-            new("libSDL3.dll", OperatingSystem.IsWindows()),
-            new("libSDL3.so.0", OperatingSystem.IsLinux()),
-        ];
+    public enum SDL_PowerState
+    {
+        SDL_POWERSTATE_ERROR = -1,
+        SDL_POWERSTATE_UNKNOWN,
+        SDL_POWERSTATE_ON_BATTERY,
+        SDL_POWERSTATE_NO_BATTERY,
+        SDL_POWERSTATE_CHARGING,
+        SDL_POWERSTATE_CHARGED,
+    }
 
-    static SDL3() =>
-        NativeLibrary.SetDllImportResolver(
-            typeof(SDL3).Assembly,
-            (name, assembly, path) =>
-                NativeLibrary.Load(
-                    name switch
-                    {
-                        nameof(SDL3) => LibraryNames.FirstOrDefault(pair => pair.Value).Key ?? name,
-                        _ => name,
-                    },
-                    assembly,
-                    path
-                )
-        );
+    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_GetPowerInfo))]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial SDL_PowerState SDL_GetPowerInfo(out int seconds, out int percent);
 }

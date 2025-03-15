@@ -20,9 +20,9 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace Open.CommandAndConquer.Sdl3;
+namespace Open.CommandAndConquer.Sdl3.Imports;
 
-public static partial class SDL3
+internal static partial class SDL3
 {
     public record struct SDL_BlendMode(uint Value)
     {
