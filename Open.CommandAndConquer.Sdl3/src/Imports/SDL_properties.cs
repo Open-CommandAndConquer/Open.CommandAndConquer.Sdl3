@@ -21,29 +21,13 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.Marshalling;
 using Open.CommandAndConquer.Sdl3.CustomMarshalling;
+using Open.CommandAndConquer.Sdl3.Properties;
 
 namespace Open.CommandAndConquer.Sdl3.Imports;
 
 internal static partial class SDL3
 {
-    public record struct SDL_PropertiesID(uint Value)
-    {
-        public static SDL_PropertiesID Invalid => new(0U);
-
-        public static implicit operator uint(SDL_PropertiesID id) => id.Value;
-
-        public static implicit operator SDL_PropertiesID(uint value) => new(value);
-    }
-
-    public enum SDL_PropertyType
-    {
-        SDL_PROPERTY_TYPE_INVALID,
-        SDL_PROPERTY_TYPE_POINTER,
-        SDL_PROPERTY_TYPE_STRING,
-        SDL_PROPERTY_TYPE_NUMBER,
-        SDL_PROPERTY_TYPE_FLOAT,
-        SDL_PROPERTY_TYPE_BOOLEAN,
-    }
+    public record struct SDL_PropertiesID(uint Value);
 
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_GetGlobalProperties))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -67,9 +51,6 @@ internal static partial class SDL3
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void SDL_UnlockProperties(SDL_PropertiesID props);
 
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public delegate void SDL_CleanupPropertyCallback(IntPtr userdata, IntPtr value);
-
     [LibraryImport(
         nameof(SDL3),
         EntryPoint = nameof(SDL_SetPointerPropertyWithCleanup),
@@ -77,11 +58,11 @@ internal static partial class SDL3
     )]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SDL_SetPointerPropertyWithCleanup(
+    public static unsafe partial bool SDL_SetPointerPropertyWithCleanup(
         SDL_PropertiesID props,
         string name,
         IntPtr value,
-        SDL_CleanupPropertyCallback cleanup,
+        delegate* unmanaged[Cdecl]<void*, void*, void> cleanup,
         IntPtr userdata
     );
 
@@ -165,7 +146,7 @@ internal static partial class SDL3
         StringMarshalling = StringMarshalling.Utf8
     )]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial SDL_PropertyType SDL_GetPropertyType(SDL_PropertiesID props, string name);
+    public static partial PropertyType SDL_GetPropertyType(SDL_PropertiesID props, string name);
 
     [LibraryImport(
         nameof(SDL3),
@@ -238,48 +219,14 @@ internal static partial class SDL3
     [return: MarshalAs(UnmanagedType.I1)]
     public static partial bool SDL_ClearProperty(SDL_PropertiesID props, string name);
 
-    public delegate void SDL_EnumeratePropertiesCallback(
-        IntPtr userdata,
-        SDL_PropertiesID props,
-        string name
-    );
-
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_EnumerateProperties))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    private static unsafe partial bool INTERNAL_SDL_EnumerateProperties(
+    public static unsafe partial bool SDL_EnumerateProperties(
         SDL_PropertiesID props,
         delegate* unmanaged[Cdecl]<IntPtr, SDL_PropertiesID, byte*, void> callback,
         IntPtr userdata
     );
-
-    public static bool SDL_EnumerateProperties(
-        SDL_PropertiesID props,
-        SDL_EnumeratePropertiesCallback callback,
-        IntPtr userdata
-    )
-    {
-        unsafe
-        {
-            return INTERNAL_SDL_EnumerateProperties(
-                props,
-                (delegate* unmanaged[Cdecl]<IntPtr, SDL_PropertiesID, byte*, void>)
-                    Marshal.GetFunctionPointerForDelegate(
-                        void (
-                            void* userdataCallback,
-                            SDL_PropertiesID propsCallback,
-                            byte* nameCallback
-                        ) =>
-                            callback(
-                                new IntPtr(userdataCallback),
-                                propsCallback,
-                                Utf8StringMarshaller.ConvertToManaged(nameCallback) ?? string.Empty
-                            )
-                    ),
-                userdata
-            );
-        }
-    }
 
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_DestroyProperties))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
