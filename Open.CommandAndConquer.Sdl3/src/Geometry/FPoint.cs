@@ -17,25 +17,14 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
+using Open.CommandAndConquer.Sdl3.CustomMarshalling;
 
-namespace Open.CommandAndConquer.Sdl3.Imports;
+namespace Open.CommandAndConquer.Sdl3.Geometry;
 
-internal static partial class SDL3
+[NativeMarshalling(typeof(FPointMarshaller))]
+public record FPoint(float X, float Y)
 {
-    private static uint SDL_FOURCC(char A, char B, char C, char D) =>
-        (uint)((byte)A | (byte)B << 8 | (byte)C << 16 | (byte)D << 24);
-
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_strdup))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static unsafe partial byte* SDL_strdup(byte* str);
-
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_free))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static unsafe partial void SDL_free(void* str);
-
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_free))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static partial void SDL_free(IntPtr str);
+    public bool InRect(FRect rect) =>
+        X >= rect.X && X < rect.X + rect.W && Y >= rect.Y && Y < rect.Y + rect.H;
 }

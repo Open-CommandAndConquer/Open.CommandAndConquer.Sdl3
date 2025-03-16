@@ -17,25 +17,21 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
+using Open.CommandAndConquer.Sdl3.Geometry;
+using static Open.CommandAndConquer.Sdl3.Imports.SDL3;
 
-namespace Open.CommandAndConquer.Sdl3.Imports;
+namespace Open.CommandAndConquer.Sdl3.CustomMarshalling;
 
-internal static partial class SDL3
+[CustomMarshaller(typeof(FPoint), MarshalMode.ElementIn, typeof(ElementIn))]
+internal static class FPointMarshaller
 {
-    private static uint SDL_FOURCC(char A, char B, char C, char D) =>
-        (uint)((byte)A | (byte)B << 8 | (byte)C << 16 | (byte)D << 24);
+    public static class ElementIn
+    {
+        public static FPoint ConvertToManaged(SDL_FPoint unmanaged) =>
+            new(unmanaged.x, unmanaged.y);
 
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_strdup))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static unsafe partial byte* SDL_strdup(byte* str);
-
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_free))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static unsafe partial void SDL_free(void* str);
-
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_free))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static partial void SDL_free(IntPtr str);
+        public static SDL_FPoint ConvertToUnmanaged(FPoint managed) =>
+            new() { x = managed.X, y = managed.Y };
+    }
 }

@@ -17,25 +17,38 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
+using Open.CommandAndConquer.Sdl3.CustomMarshalling;
+using static Open.CommandAndConquer.Sdl3.Imports.SDL3;
 
-namespace Open.CommandAndConquer.Sdl3.Imports;
+namespace Open.CommandAndConquer.Sdl3.Geometry;
 
-internal static partial class SDL3
+[NativeMarshalling(typeof(RectMarshaller))]
+public record Rect(int X, int Y, int W, int H)
 {
-    private static uint SDL_FOURCC(char A, char B, char C, char D) =>
-        (uint)((byte)A | (byte)B << 8 | (byte)C << 16 | (byte)D << 24);
+    public bool IsEmpty => W <= 0 || H <= 0;
 
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_strdup))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static unsafe partial byte* SDL_strdup(byte* str);
+    public bool HasIntersection(Rect other) => SDL_HasRectIntersection(this, other);
 
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_free))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static unsafe partial void SDL_free(void* str);
+    public bool TryGetIntersection(Rect other, out Rect result) =>
+        SDL_GetRectIntersection(this, other, out result);
 
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_free))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    internal static partial void SDL_free(IntPtr str);
+    public bool TryGetUnion(Rect other, out Rect result) =>
+        SDL_GetRectUnion(this, other, out result);
+
+    public bool TryGetLineIntersection(
+        (Point Point1, Point Point2) line,
+        out (Point Point1, Point Point2) result
+    )
+    {
+        var x1 = line.Point1.X;
+        var y1 = line.Point1.Y;
+        var x2 = line.Point2.X;
+        var y2 = line.Point2.Y;
+        var achieved = SDL_GetRectAndLineIntersection(this, ref x1, ref y1, ref x2, ref y2);
+        result = (Point1: new Point(x1, y1), Point2: new Point(x2, y2));
+        return achieved;
+    }
+
+    public FRect ToFRect() => new(X, Y, W, H);
 }
