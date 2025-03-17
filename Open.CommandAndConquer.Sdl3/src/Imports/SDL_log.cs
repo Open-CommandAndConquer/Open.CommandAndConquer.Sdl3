@@ -19,66 +19,23 @@
 
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.Marshalling;
+using Open.CommandAndConquer.Sdl3.Logging;
 
 namespace Open.CommandAndConquer.Sdl3.Imports;
 
 internal static partial class SDL3
 {
-    public enum SDL_LogCategory
-    {
-        SDL_LOG_CATEGORY_APPLICATION,
-        SDL_LOG_CATEGORY_ERROR,
-        SDL_LOG_CATEGORY_ASSERT,
-        SDL_LOG_CATEGORY_SYSTEM,
-        SDL_LOG_CATEGORY_AUDIO,
-        SDL_LOG_CATEGORY_VIDEO,
-        SDL_LOG_CATEGORY_RENDER,
-        SDL_LOG_CATEGORY_INPUT,
-        SDL_LOG_CATEGORY_TEST,
-        SDL_LOG_CATEGORY_GPU,
-        SDL_LOG_CATEGORY_RESERVED2,
-        SDL_LOG_CATEGORY_RESERVED3,
-        SDL_LOG_CATEGORY_RESERVED4,
-        SDL_LOG_CATEGORY_RESERVED5,
-        SDL_LOG_CATEGORY_RESERVED6,
-        SDL_LOG_CATEGORY_RESERVED7,
-        SDL_LOG_CATEGORY_RESERVED8,
-        SDL_LOG_CATEGORY_RESERVED9,
-        SDL_LOG_CATEGORY_RESERVED10,
-        SDL_LOG_CATEGORY_CUSTOM,
-    }
-
-    public enum SDL_LogPriority
-    {
-        SDL_LOG_PRIORITY_INVALID,
-        SDL_LOG_PRIORITY_TRACE,
-        SDL_LOG_PRIORITY_VERBOSE,
-        SDL_LOG_PRIORITY_DEBUG,
-        SDL_LOG_PRIORITY_INFO,
-        SDL_LOG_PRIORITY_WARN,
-        SDL_LOG_PRIORITY_ERROR,
-        SDL_LOG_PRIORITY_CRITICAL,
-        SDL_LOG_PRIORITY_COUNT,
-    }
-
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_SetLogPriorities))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void SDL_SetLogPriorities(SDL_LogPriority priority);
+    public static partial void SDL_SetLogPriorities(LogPriority priority);
 
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_SetLogPriority))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void INTERNAL_SDL_SetLogPriority(int category, SDL_LogPriority priority);
-
-    public static void SDL_SetLogPriority<TEnum>(TEnum category, SDL_LogPriority priority)
-        where TEnum : Enum => INTERNAL_SDL_SetLogPriority(Convert.ToInt32(category), priority);
+    public static partial void SDL_SetLogPriority(int category, LogPriority priority);
 
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_GetLogPriority))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial SDL_LogPriority INTERNAL_SDL_GetLogPriority(int category);
-
-    public static SDL_LogPriority SDL_GetLogPriority<TEnum>(TEnum category)
-        where TEnum : Enum => INTERNAL_SDL_GetLogPriority(Convert.ToInt32(category));
+    public static partial LogPriority SDL_GetLogPriority(int category);
 
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_ResetLogPriorities))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -91,7 +48,7 @@ internal static partial class SDL3
     )]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SDL_SetLogPriorityPrefix(SDL_LogPriority priority, string prefix);
+    public static partial bool SDL_SetLogPriorityPrefix(LogPriority priority, string prefix);
 
     [LibraryImport(
         nameof(SDL3),
@@ -107,10 +64,7 @@ internal static partial class SDL3
         StringMarshalling = StringMarshalling.Utf8
     )]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void INTERNAL_SDL_LogTrace(int category, string message);
-
-    public static void SDL_LogTrace<TEnum>(TEnum category, string message)
-        where TEnum : Enum => INTERNAL_SDL_LogTrace(Convert.ToInt32(category), message);
+    public static partial void SDL_LogTrace(int category, string message);
 
     [LibraryImport(
         nameof(SDL3),
@@ -118,10 +72,7 @@ internal static partial class SDL3
         StringMarshalling = StringMarshalling.Utf8
     )]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void INTERNAL_SDL_LogVerbose(int category, string message);
-
-    public static void SDL_LogVerbose<TEnum>(TEnum category, string message)
-        where TEnum : Enum => INTERNAL_SDL_LogVerbose(Convert.ToInt32(category), message);
+    public static partial void SDL_LogVerbose(int category, string message);
 
     [LibraryImport(
         nameof(SDL3),
@@ -129,10 +80,7 @@ internal static partial class SDL3
         StringMarshalling = StringMarshalling.Utf8
     )]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void INTERNAL_SDL_LogDebug(int category, string message);
-
-    public static void SDL_LogDebug<TEnum>(TEnum category, string message)
-        where TEnum : Enum => INTERNAL_SDL_LogDebug(Convert.ToInt32(category), message);
+    public static partial void SDL_LogDebug(int category, string message);
 
     [LibraryImport(
         nameof(SDL3),
@@ -140,10 +88,7 @@ internal static partial class SDL3
         StringMarshalling = StringMarshalling.Utf8
     )]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void INTERNAL_SDL_LogInfo(int category, string message);
-
-    public static void SDL_LogInfo<TEnum>(TEnum category, string message)
-        where TEnum : Enum => INTERNAL_SDL_LogInfo(Convert.ToInt32(category), message);
+    public static partial void SDL_LogInfo(int category, string message);
 
     [LibraryImport(
         nameof(SDL3),
@@ -151,10 +96,7 @@ internal static partial class SDL3
         StringMarshalling = StringMarshalling.Utf8
     )]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void INTERNAL_SDL_LogWarn(int category, string message);
-
-    public static void SDL_LogWarn<TEnum>(TEnum category, string message)
-        where TEnum : Enum => INTERNAL_SDL_LogWarn(Convert.ToInt32(category), message);
+    public static partial void SDL_LogWarn(int category, string message);
 
     [LibraryImport(
         nameof(SDL3),
@@ -162,10 +104,7 @@ internal static partial class SDL3
         StringMarshalling = StringMarshalling.Utf8
     )]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void INTERNAL_SDL_LogError(int category, string message);
-
-    public static void SDL_LogError<TEnum>(TEnum category, string message)
-        where TEnum : Enum => INTERNAL_SDL_LogError(Convert.ToInt32(category), message);
+    public static partial void SDL_LogError(int category, string message);
 
     [LibraryImport(
         nameof(SDL3),
@@ -173,10 +112,7 @@ internal static partial class SDL3
         StringMarshalling = StringMarshalling.Utf8
     )]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void INTERNAL_SDL_LogCritical(int category, string message);
-
-    public static void SDL_LogCritical<TEnum>(TEnum category, string message)
-        where TEnum : Enum => INTERNAL_SDL_LogCritical(Convert.ToInt32(category), message);
+    public static partial void SDL_LogCritical(int category, string message);
 
     [LibraryImport(
         nameof(SDL3),
@@ -184,119 +120,28 @@ internal static partial class SDL3
         StringMarshalling = StringMarshalling.Utf8
     )]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static partial void INTERNAL_SDL_LogMessage(
-        int category,
-        SDL_LogPriority priority,
-        string message
-    );
-
-    public static void SDL_LogMessage<TEnum>(
-        TEnum category,
-        SDL_LogPriority priority,
-        string message
-    )
-        where TEnum : Enum => INTERNAL_SDL_LogMessage(Convert.ToInt32(category), priority, message);
-
-    public delegate void SDL_LogOutputFunction<in TEnum>(
-        IntPtr userdata,
-        TEnum category,
-        SDL_LogPriority priority,
-        string message
-    )
-        where TEnum : Enum;
+    public static partial void SDL_LogMessage(int category, LogPriority priority, string message);
 
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_GetDefaultLogOutputFunction))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial delegate* unmanaged[Cdecl]<
+    public static unsafe partial delegate* unmanaged[Cdecl]<
         IntPtr,
         int,
-        SDL_LogPriority,
+        LogPriority,
         byte*,
-        void> INTERNAL_SDL_GetDefaultLogOutputFunction();
-
-    public static SDL_LogOutputFunction<TEnum>? SDL_GetDefaultLogOutputFunction<TEnum>()
-        where TEnum : Enum
-    {
-        unsafe
-        {
-            var result = INTERNAL_SDL_GetDefaultLogOutputFunction();
-            return result is null
-                ? null
-                : (userdata, category, priority, message) =>
-                    result(
-                        userdata,
-                        Convert.ToInt32(category),
-                        priority,
-                        Utf8StringMarshaller.ConvertToUnmanaged(message)
-                    );
-        }
-    }
+        void> SDL_GetDefaultLogOutputFunction();
 
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_GetLogOutputFunction))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial void INTERNAL_SDL_GetLogOutputFunction(
-        out delegate* unmanaged[Cdecl]<IntPtr, int, SDL_LogPriority, byte*, void> callback,
+    public static unsafe partial void SDL_GetLogOutputFunction(
+        out delegate* unmanaged[Cdecl]<IntPtr, int, LogPriority, byte*, void> callback,
         out IntPtr userdata
     );
-
-    public static void SDL_GetLogOutputFunction<TEnum>(
-        out SDL_LogOutputFunction<TEnum>? callback,
-        out IntPtr userdata
-    )
-        where TEnum : Enum
-    {
-        unsafe
-        {
-            INTERNAL_SDL_GetLogOutputFunction(out var callbackOut, out var userdataOut);
-            callback = callbackOut is null
-                ? null
-                : (userdataPtr, category, priority, message) =>
-                    callbackOut(
-                        userdataPtr,
-                        Convert.ToInt32(category),
-                        priority,
-                        Utf8StringMarshaller.ConvertToUnmanaged(message)
-                    );
-            userdata = userdataOut;
-        }
-    }
 
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_SetLogOutputFunction))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    private static unsafe partial void INTERNAL_SDL_SetLogOutputFunction(
-        delegate* unmanaged[Cdecl]<IntPtr, int, SDL_LogPriority, byte*, void> callback,
+    public static unsafe partial void SDL_SetLogOutputFunction(
+        delegate* unmanaged[Cdecl]<IntPtr, int, LogPriority, byte*, void> callback,
         IntPtr userdata
     );
-
-    public static void SDL_SetLogOutputFunction<TEnum>(
-        SDL_LogOutputFunction<TEnum>? callback,
-        IntPtr userdata
-    )
-        where TEnum : Enum
-    {
-        unsafe
-        {
-            INTERNAL_SDL_SetLogOutputFunction(
-                callback is null
-                    ? null
-                    : (delegate* unmanaged[Cdecl]<IntPtr, int, SDL_LogPriority, byte*, void>)
-                        Marshal.GetFunctionPointerForDelegate(
-                            void (
-                                IntPtr userdataCallback,
-                                int categoryCallback,
-                                SDL_LogPriority priorityCallback,
-                                byte* messageCallback
-                            ) =>
-                                callback(
-                                    userdataCallback,
-                                    (TEnum)Enum.ToObject(typeof(TEnum), categoryCallback),
-                                    priorityCallback,
-                                    Utf8StringMarshaller.ConvertToManaged(messageCallback)
-                                        ?? string.Empty
-                                )
-                        ),
-                userdata
-            );
-        }
-    }
 }
