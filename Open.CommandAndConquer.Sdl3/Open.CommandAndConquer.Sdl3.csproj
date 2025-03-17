@@ -27,7 +27,7 @@
     
     <PropertyGroup>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>0.12.0</Version>
+        <Version>0.13.0</Version>
         <Title>Open.CommandAndConquer.Sdl3</Title>
         <Authors>Open.CommandAndConquer, Victor Matia &lt;vmatir@outlook.com&gt;</Authors>
         <Description>A direct import of the SDL3 library for the Open.CommandAndConquer project.</Description>

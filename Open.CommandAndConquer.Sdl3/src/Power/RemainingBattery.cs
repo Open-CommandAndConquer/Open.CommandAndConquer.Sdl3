@@ -17,15 +17,6 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using Open.CommandAndConquer.Sdl3.Power;
+namespace Open.CommandAndConquer.Sdl3.Power;
 
-namespace Open.CommandAndConquer.Sdl3.Imports;
-
-internal static partial class SDL3
-{
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_GetPowerInfo))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial PowerState SDL_GetPowerInfo(out int seconds, out int percent);
-}
+public record RemainingBattery(TimeSpan TimeRemaining, float PercentRemaining);
