@@ -17,35 +17,18 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using Open.CommandAndConquer.Sdl3.Exceptions.SubsystemExceptions;
-using Open.CommandAndConquer.Sdl3.Subsystems.VideoSubsystems;
-using static Open.CommandAndConquer.Sdl3.Imports.SDL3;
+namespace Open.CommandAndConquer.Sdl3.Exceptions.SubsystemExceptions.VideoSubsystemExceptions;
 
-namespace Open.CommandAndConquer.Sdl3.Subsystems;
-
-public sealed class VideoSubsystem : IDisposable
+public class PrimarySelectionException : VideoSubsystemException
 {
-    public Clipboard Clipboard { get; } = new();
-    public PrimarySelection PrimarySelection { get; } = new();
+    public PrimarySelectionException() { }
 
-    internal VideoSubsystem()
-    {
-        if (!SDL_InitSubSystem(SDL_INIT_VIDEO))
-        {
-            throw new VideoSubsystemException(SDL_GetError());
-        }
-    }
+    public PrimarySelectionException(string? message)
+        : base(message) { }
 
-    public void Dispose()
-    {
-        if (SDL_WasInit(SDL_INIT_VIDEO).Value != 0)
-        {
-            SDL_QuitSubSystem(SDL_INIT_VIDEO);
-        }
+    public PrimarySelectionException(string? message, Exception? innerException)
+        : base(message, innerException) { }
 
-        if (SDL_WasInit(new SDL_InitFlags(0)).Value == 0)
-        {
-            SDL_Quit();
-        }
-    }
+    public PrimarySelectionException(string? message, int errorCode)
+        : base(message, errorCode) { }
 }

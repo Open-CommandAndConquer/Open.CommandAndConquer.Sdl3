@@ -17,35 +17,40 @@
 // DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-using Open.CommandAndConquer.Sdl3.Exceptions.SubsystemExceptions;
-using Open.CommandAndConquer.Sdl3.Subsystems.VideoSubsystems;
+using Open.CommandAndConquer.Sdl3.Exceptions.SubsystemExceptions.VideoSubsystemExceptions;
 using static Open.CommandAndConquer.Sdl3.Imports.SDL3;
 
-namespace Open.CommandAndConquer.Sdl3.Subsystems;
+namespace Open.CommandAndConquer.Sdl3.Subsystems.VideoSubsystems;
 
-public sealed class VideoSubsystem : IDisposable
+public class PrimarySelection
 {
-    public Clipboard Clipboard { get; } = new();
-    public PrimarySelection PrimarySelection { get; } = new();
+    private string? _text;
 
-    internal VideoSubsystem()
+    internal PrimarySelection() { }
+
+    public void SetText(string text)
     {
-        if (!SDL_InitSubSystem(SDL_INIT_VIDEO))
+        if (!SDL_SetPrimarySelectionText(text))
         {
-            throw new VideoSubsystemException(SDL_GetError());
+            throw new PrimarySelectionException(SDL_GetError());
         }
+
+        _text = text;
     }
 
-    public void Dispose()
+    public string? GetText()
     {
-        if (SDL_WasInit(SDL_INIT_VIDEO).Value != 0)
+        if (!SDL_HasPrimarySelectionText())
         {
-            SDL_QuitSubSystem(SDL_INIT_VIDEO);
+            return null;
         }
 
-        if (SDL_WasInit(new SDL_InitFlags(0)).Value == 0)
+        _text = SDL_GetPrimarySelectionText();
+        if (string.IsNullOrEmpty(_text))
         {
-            SDL_Quit();
+            throw new PrimarySelectionException(SDL_GetError());
         }
+
+        return _text;
     }
 }
