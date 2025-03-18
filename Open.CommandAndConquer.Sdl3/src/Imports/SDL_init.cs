@@ -26,25 +26,7 @@ namespace Open.CommandAndConquer.Sdl3.Imports;
 
 internal static partial class SDL3
 {
-    public record struct SDL_InitFlags(uint Value)
-    {
-        public static SDL_InitFlags None => new(0U);
-
-        public static SDL_InitFlags operator |(SDL_InitFlags lhs, SDL_InitFlags rhs) =>
-            new(lhs.Value | rhs.Value);
-
-        public static SDL_InitFlags operator &(SDL_InitFlags lhs, SDL_InitFlags rhs) =>
-            new(lhs.Value & rhs.Value);
-
-        public static SDL_InitFlags operator ^(SDL_InitFlags lhs, SDL_InitFlags rhs) =>
-            new(lhs.Value ^ rhs.Value);
-
-        public static SDL_InitFlags operator ~(SDL_InitFlags flags) => new(~flags.Value);
-
-        public static implicit operator uint(SDL_InitFlags flags) => flags.Value;
-
-        public static implicit operator SDL_InitFlags(uint flags) => new(flags);
-    }
+    public record struct SDL_InitFlags(uint Value);
 
     public static SDL_InitFlags SDL_INIT_AUDIO => new(0x00000010U);
     public static SDL_InitFlags SDL_INIT_VIDEO => new(0x00000020U);
@@ -54,11 +36,6 @@ internal static partial class SDL3
     public static SDL_InitFlags SDL_INIT_EVENTS => new(0x00004000U);
     public static SDL_InitFlags SDL_INIT_SENSOR => new(0x00008000U);
     public static SDL_InitFlags SDL_INIT_CAMERA => new(0x00010000U);
-
-    [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_Init))]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static partial bool SDL_Init(SDL_InitFlags flags);
 
     [LibraryImport(nameof(SDL3), EntryPoint = nameof(SDL_InitSubSystem))]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
